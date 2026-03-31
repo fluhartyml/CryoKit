@@ -1,0 +1,26 @@
+{
+  "": {
+    "swift-dependencies": "/Users/michaelfluharty/Developer.complex/CryoKit/.build/arm64-apple-macosx/debug/CryoKit.build/master.swiftdeps"
+  },
+  "/Users/michaelfluharty/Developer.complex/CryoKit/Sources/CryoKit/MusicPlaybackManager.swift": {
+    "dependencies": "/Users/michaelfluharty/Developer.complex/CryoKit/.build/arm64-apple-macosx/debug/CryoKit.build/MusicPlaybackManager.d",
+    "object": "/Users/michaelfluharty/Developer.complex/CryoKit/.build/arm64-apple-macosx/debug/CryoKit.build/MusicPlaybackManager.swift.o",
+    "swiftmodule": "/Users/michaelfluharty/Developer.complex/CryoKit/.build/arm64-apple-macosx/debug/CryoKit.build/MusicPlaybackManager~partial.swiftmodule",
+    "swift-dependencies": "/Users/michaelfluharty/Developer.complex/CryoKit/.build/arm64-apple-macosx/debug/CryoKit.build/MusicPlaybackManager.swiftdeps",
+    "diagnostics": "/Users/michaelfluharty/Developer.complex/CryoKit/.build/arm64-apple-macosx/debug/CryoKit.build/MusicPlaybackManager.dia"
+  },
+  "/Users/michaelfluharty/Developer.complex/CryoKit/Sources/CryoKit/MusicStationCatalog.swift": {
+    "dependencies": "/Users/michaelfluharty/Developer.complex/CryoKit/.build/arm64-apple-macosx/debug/CryoKit.build/MusicStationCatalog.d",
+    "object": "/Users/michaelfluharty/Developer.complex/CryoKit/.build/arm64-apple-macosx/debug/CryoKit.build/MusicStationCatalog.swift.o",
+    "swiftmodule": "/Users/michaelfluharty/Developer.complex/CryoKit/.build/arm64-apple-macosx/debug/CryoKit.build/MusicStationCatalog~partial.swiftmodule",
+    "swift-dependencies": "/Users/michaelfluharty/Developer.complex/CryoKit/.build/arm64-apple-macosx/debug/CryoKit.build/MusicStationCatalog.swiftdeps",
+    "diagnostics": "/Users/michaelfluharty/Developer.complex/CryoKit/.build/arm64-apple-macosx/debug/CryoKit.build/MusicStationCatalog.dia"
+  },
+  "/Users/michaelfluharty/Developer.complex/CryoKit/Sources/CryoKit/WeatherManager.swift": {
+    "dependencies": "/Users/michaelfluharty/Developer.complex/CryoKit/.build/arm64-apple-macosx/debug/CryoKit.build/WeatherManager.d",
+    "object": "/Users/michaelfluharty/Developer.complex/CryoKit/.build/arm64-apple-macosx/debug/CryoKit.build/WeatherManager.swift.o",
+    "swiftmodule": "/Users/michaelfluharty/Developer.complex/CryoKit/.build/arm64-apple-macosx/debug/CryoKit.build/WeatherManager~partial.swiftmodule",
+    "swift-dependencies": "/Users/michaelfluharty/Developer.complex/CryoKit/.build/arm64-apple-macosx/debug/CryoKit.build/WeatherManager.swiftdeps",
+    "diagnostics": "/Users/michaelfluharty/Developer.complex/CryoKit/.build/arm64-apple-macosx/debug/CryoKit.build/WeatherManager.dia"
+  }
+}
