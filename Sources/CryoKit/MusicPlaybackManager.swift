@@ -4,6 +4,9 @@
 //
 //  Created by Michael Fluharty on 3/31/26.
 //
+//  DIAMOND RULE: You can only ADD to CryoKit. You are NOT allowed to
+//  subtract code or features. No removals without express written consent.
+//
 
 import Foundation
 import MusicKit
@@ -30,6 +33,8 @@ public class MusicPlaybackManager {
     public var sleepTimerRemaining = ""
     public var isAuthorized = false
     public var errorMessage = ""
+    public var playbackTime: TimeInterval = 0
+    public var trackDuration: TimeInterval = 0
 
     // MARK: - Shuffle & Repeat
 
@@ -247,6 +252,10 @@ public class MusicPlaybackManager {
                     }
                 }
                 self.isPlaying = self.player.state.playbackStatus == .playing
+                self.playbackTime = self.player.playbackTime
+                if let entry, case let .song(song) = entry.item {
+                    self.trackDuration = song.duration ?? 0
+                }
                 try? await Task.sleep(for: .seconds(1))
             }
         }
