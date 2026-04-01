@@ -36,6 +36,7 @@ public class MusicPlaybackManager {
     public var isShuffleEnabled = false {
         didSet {
             player.state.shuffleMode = isShuffleEnabled ? .songs : .off
+            UserDefaults.standard.set(isShuffleEnabled, forKey: "shuffleEnabled")
         }
     }
     public var repeatMode: CryoRepeatMode = .none {
@@ -45,6 +46,7 @@ public class MusicPlaybackManager {
             case .all: player.state.repeatMode = .all
             case .one: player.state.repeatMode = .one
             }
+            UserDefaults.standard.set(repeatMode.rawValue, forKey: "repeatMode")
         }
     }
 
@@ -59,6 +61,13 @@ public class MusicPlaybackManager {
            station != .none {
             currentStation = station
             nowPlayingTitle = UserDefaults.standard.string(forKey: "lastNowPlayingTitle") ?? station.rawValue
+        }
+
+        // Restore shuffle & repeat
+        isShuffleEnabled = UserDefaults.standard.bool(forKey: "shuffleEnabled")
+        if let savedRepeat = UserDefaults.standard.string(forKey: "repeatMode"),
+           let mode = CryoRepeatMode(rawValue: savedRepeat) {
+            repeatMode = mode
         }
 
         startNowPlayingObserver()
