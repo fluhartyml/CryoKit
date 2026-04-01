@@ -36,7 +36,7 @@ public struct CryoTransportControls: View {
             // Row 1: Transport
             HStack(spacing: 32) {
                 Button { player.skipBack() } label: {
-                    transportButton(icon: "backward.fill", size: 24)
+                    transportButton(icon: "backward.end.fill", size: 24)
                 }
 
                 Button { player.togglePlayPause() } label: {
@@ -48,7 +48,7 @@ public struct CryoTransportControls: View {
                 }
 
                 Button { player.skipForward() } label: {
-                    transportButton(icon: "forward.fill", size: 24)
+                    transportButton(icon: "forward.end.fill", size: 24)
                 }
 
                 Button { player.stop() } label: {
