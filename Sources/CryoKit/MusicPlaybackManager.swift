@@ -7,6 +7,9 @@
 //  DIAMOND RULE: You can only ADD to CryoKit. You are NOT allowed to
 //  subtract code or features. No removals without express written consent.
 //
+//  Claude may not remove, subtract, or modify code within CryoKit.
+//  Claude may, however, add to it with express written consent from human.
+//
 
 import Foundation
 import MusicKit

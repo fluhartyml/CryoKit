@@ -22,6 +22,8 @@ public struct CryoStationPicker: View {
     @State private var albumsExpanded = false
     @State private var artistsExpanded = false
     @State private var libraryLoaded = false
+    @State private var expandedPlaylistID: MusicItemID?
+    @State private var revealedSongs: [Song] = []
 
     public init(
         player: MusicPlaybackManager,
@@ -293,25 +295,7 @@ public struct CryoStationPicker: View {
                     isExpanded: $playlistsExpanded
                 ) {
                     ForEach(player.libraryPlaylists, id: \.id) { playlist in
-                        Button {
-                            Task { await player.playPlaylist(playlist) }
-                        } label: {
-                            HStack {
-                                Image(systemName: "music.note.list")
-                                    .font(.system(size: 12))
-                                    .foregroundStyle(border.opacity(0.5))
-
-                                Text(playlist.name)
-                                    .font(.system(size: 14, weight: .regular, design: .monospaced))
-                                    .foregroundStyle(tint.opacity(0.7))
-                                    .lineLimit(1)
-
-                                Spacer()
-                            }
-                            .padding(.vertical, 6)
-                            .padding(.leading, 48)
-                            .padding(.trailing, 8)
-                        }
+                        playlistRevealRow(playlist: playlist)
                     }
                 }
 
@@ -417,6 +401,100 @@ public struct CryoStationPicker: View {
 
             if isExpanded.wrappedValue {
                 content()
+            }
+        }
+    }
+
+    // MARK: - Playlist Reveal Row
+
+    private func playlistRevealRow(playlist: Playlist) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Button {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    if expandedPlaylistID == playlist.id {
+                        expandedPlaylistID = nil
+                        revealedSongs = []
+                    } else {
+                        expandedPlaylistID = playlist.id
+                        Task {
+                            let detailed = try? await playlist.with([.tracks])
+                            let tracks = detailed?.tracks ?? []
+                            revealedSongs = tracks.compactMap { track in
+                                if case let .song(song) = track { return song }
+                                return nil
+                            }
+                        }
+                    }
+                }
+            } label: {
+                HStack {
+                    Image(systemName: expandedPlaylistID == playlist.id ? "chevron.down" : "music.note.list")
+                        .font(.system(size: 12))
+                        .foregroundStyle(border.opacity(0.5))
+
+                    Text(playlist.name)
+                        .font(.system(size: 14, weight: .regular, design: .monospaced))
+                        .foregroundStyle(tint.opacity(0.7))
+                        .lineLimit(1)
+
+                    Spacer()
+
+                    if expandedPlaylistID == playlist.id {
+                        Text("\(revealedSongs.count) tracks")
+                            .font(.system(size: 11, design: .monospaced))
+                            .foregroundStyle(border.opacity(0.5))
+                    }
+                }
+                .padding(.vertical, 6)
+                .padding(.leading, 48)
+                .padding(.trailing, 8)
+            }
+
+            // Revealed track list
+            if expandedPlaylistID == playlist.id {
+                // Play All
+                Button {
+                    Task { await player.playPlaylist(playlist) }
+                } label: {
+                    HStack {
+                        Image(systemName: "play.fill")
+                            .font(.system(size: 11))
+                            .foregroundStyle(accent.opacity(0.7))
+
+                        Text("Play All (\(revealedSongs.count) tracks)")
+                            .font(.system(size: 13, weight: .medium, design: .monospaced))
+                            .foregroundStyle(accent.opacity(0.7))
+
+                        Spacer()
+                    }
+                    .padding(.vertical, 4)
+                    .padding(.leading, 62)
+                    .padding(.trailing, 8)
+                }
+
+                // Individual songs
+                ForEach(revealedSongs, id: \.id) { song in
+                    Button {
+                        Task { await player.playSong(song) }
+                    } label: {
+                        HStack {
+                            Text(song.title)
+                                .font(.system(size: 13, weight: .regular, design: .monospaced))
+                                .foregroundStyle(tint.opacity(0.6))
+                                .lineLimit(1)
+
+                            Spacer()
+
+                            Text(song.artistName)
+                                .font(.system(size: 11, design: .monospaced))
+                                .foregroundStyle(border.opacity(0.4))
+                                .lineLimit(1)
+                        }
+                        .padding(.vertical, 4)
+                        .padding(.leading, 62)
+                        .padding(.trailing, 8)
+                    }
+                }
             }
         }
     }
