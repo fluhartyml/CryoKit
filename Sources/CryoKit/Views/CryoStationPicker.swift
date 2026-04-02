@@ -24,6 +24,7 @@ public struct CryoStationPicker: View {
     @State private var libraryLoaded = false
     @State private var expandedPlaylistID: MusicItemID?
     @State private var revealedSongs: [Song] = []
+    @State private var playlistTrackCounts: [MusicItemID: Int] = [:]
 
     public init(
         player: MusicPlaybackManager,
@@ -423,17 +424,18 @@ public struct CryoStationPicker: View {
                                 if case let .song(song) = track { return song }
                                 return nil
                             }
+                            playlistTrackCounts[playlist.id] = revealedSongs.count
                         }
                     }
                 }
             } label: {
                 HStack {
                     Image(systemName: expandedPlaylistID == playlist.id ? "chevron.down" : "music.note.list")
-                        .font(.system(size: 12))
+                        .font(.system(size: 14))
                         .foregroundStyle(border.opacity(0.5))
 
                     Text(playlist.name)
-                        .font(.system(size: 14, weight: .regular, design: .monospaced))
+                        .font(.system(size: 18, weight: .regular, design: .monospaced))
                         .foregroundStyle(tint.opacity(0.7))
                         .lineLimit(1)
 
@@ -441,7 +443,11 @@ public struct CryoStationPicker: View {
 
                     if expandedPlaylistID == playlist.id {
                         Text("\(revealedSongs.count) tracks")
-                            .font(.system(size: 11, design: .monospaced))
+                            .font(.system(size: 14, design: .monospaced))
+                            .foregroundStyle(border.opacity(0.6))
+                    } else if let count = playlistTrackCounts[playlist.id] {
+                        Text("\(count)")
+                            .font(.system(size: 14, design: .monospaced))
                             .foregroundStyle(border.opacity(0.5))
                     }
                 }
@@ -458,12 +464,12 @@ public struct CryoStationPicker: View {
                 } label: {
                     HStack {
                         Image(systemName: "play.fill")
-                            .font(.system(size: 11))
-                            .foregroundStyle(accent.opacity(0.7))
+                            .font(.system(size: 14))
+                            .foregroundStyle(accent.opacity(0.8))
 
                         Text("Play All (\(revealedSongs.count) tracks)")
-                            .font(.system(size: 13, weight: .medium, design: .monospaced))
-                            .foregroundStyle(accent.opacity(0.7))
+                            .font(.system(size: 18, weight: .medium, design: .monospaced))
+                            .foregroundStyle(accent.opacity(0.8))
 
                         Spacer()
                     }
@@ -479,15 +485,15 @@ public struct CryoStationPicker: View {
                     } label: {
                         HStack {
                             Text(song.title)
-                                .font(.system(size: 13, weight: .regular, design: .monospaced))
-                                .foregroundStyle(tint.opacity(0.6))
+                                .font(.system(size: 18, weight: .regular, design: .monospaced))
+                                .foregroundStyle(tint.opacity(0.7))
                                 .lineLimit(1)
 
                             Spacer()
 
                             Text(song.artistName)
-                                .font(.system(size: 11, design: .monospaced))
-                                .foregroundStyle(border.opacity(0.4))
+                                .font(.system(size: 16, design: .monospaced))
+                                .foregroundStyle(border.opacity(0.6))
                                 .lineLimit(1)
                         }
                         .padding(.vertical, 4)
