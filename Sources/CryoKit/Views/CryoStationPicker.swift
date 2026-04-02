@@ -298,6 +298,7 @@ public struct CryoStationPicker: View {
                     ForEach(player.libraryPlaylists, id: \.id) { playlist in
                         playlistRevealRow(playlist: playlist)
                     }
+                    .onAppear { loadAllPlaylistCounts() }
                 }
 
                 // Albums
@@ -402,6 +403,21 @@ public struct CryoStationPicker: View {
 
             if isExpanded.wrappedValue {
                 content()
+            }
+        }
+    }
+
+    // MARK: - Playlist Track Count Loader
+
+    private func loadAllPlaylistCounts() {
+        for playlist in player.libraryPlaylists {
+            guard playlistTrackCounts[playlist.id] == nil else { continue }
+            Task {
+                let detailed = try? await playlist.with([.tracks])
+                let count = detailed?.tracks?.count ?? 0
+                await MainActor.run {
+                    playlistTrackCounts[playlist.id] = count
+                }
             }
         }
     }
