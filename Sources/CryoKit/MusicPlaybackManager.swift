@@ -10,6 +10,12 @@
 //  Claude may not remove, subtract, or modify code within CryoKit.
 //  Claude may, however, add to it with express written consent from human.
 //
+//  DATA LAYER ONLY: CryoKit is a data and information relay.
+//  It provides playback, station catalog, library access, and weather data.
+//  It must NEVER contain font modifiers, text styles, or presentation logic.
+//  All aesthetic decisions belong to the consuming app (CryoTunes, Tally Matrix, etc.).
+//  This principle applies to CryoKit and all future shared packages.
+//
 
 import Foundation
 import MusicKit
