@@ -8,11 +8,15 @@
 import SwiftUI
 import MusicKit
 
+// fontSize: Base font size for body text. Defaults to 14 (iPhone/iPad).
+// tvOS apps should pass a larger value (e.g. 28) to scale all text proportionally.
+// All font sizes in this view scale relative to this base value.
 public struct CryoStationPicker: View {
     @Bindable var player: MusicPlaybackManager
     let tint: Color
     let accent: Color
     let border: Color
+    let fontSize: CGFloat
 
     @State private var expandedCategories: Set<StationCategory> = []
     @State private var expandedDecades: Set<BillboardDecade> = []
@@ -26,16 +30,25 @@ public struct CryoStationPicker: View {
     @State private var revealedSongs: [Song] = []
     @State private var playlistTrackCounts: [MusicItemID: Int] = [:]
 
+    // Computed scaled font sizes relative to fontSize base (default 14)
+    private var fontSmall: CGFloat { fontSize * 0.79 }      // ~11 at base 14
+    private var fontIcon: CGFloat { fontSize * 0.86 }       // ~12 at base 14
+    private var fontBody: CGFloat { fontSize }               // 14 at base 14
+    private var fontMedium: CGFloat { fontSize * 1.14 }      // ~16 at base 14
+    private var fontLarge: CGFloat { fontSize * 1.29 }       // ~18 at base 14
+
     public init(
         player: MusicPlaybackManager,
         tint: Color = Color(red: 0.65, green: 0.82, blue: 0.95),
         accent: Color = Color(red: 0.5, green: 0.78, blue: 0.95),
-        border: Color = Color(red: 0.35, green: 0.55, blue: 0.75)
+        border: Color = Color(red: 0.35, green: 0.55, blue: 0.75),
+        fontSize: CGFloat = 18
     ) {
         self.player = player
         self.tint = tint
         self.accent = accent
         self.border = border
+        self.fontSize = fontSize
     }
 
     public var body: some View {
@@ -67,12 +80,12 @@ public struct CryoStationPicker: View {
             } label: {
                 HStack {
                     Image(systemName: expandedCategories.contains(category) ? "chevron.down" : "chevron.right")
-                        .font(.system(size: 12))
+                        .font(.system(size: fontIcon))
                         .foregroundStyle(border)
                         .frame(width: 20)
 
                     Text(category.rawValue)
-                        .font(.system(size: 16, weight: .semibold, design: .monospaced))
+                        .font(.system(size: fontMedium, weight: .semibold, design: .monospaced))
                         .foregroundStyle(tint)
 
                     Spacer()
@@ -80,7 +93,7 @@ public struct CryoStationPicker: View {
                     if !expandedCategories.contains(category) &&
                         player.currentStation.category == category {
                         Image(systemName: "checkmark")
-                            .font(.system(size: 12))
+                            .font(.system(size: fontIcon))
                             .foregroundStyle(accent)
                     }
                 }
@@ -111,12 +124,12 @@ public struct CryoStationPicker: View {
             } label: {
                 HStack {
                     Image(systemName: asmrExpanded ? "chevron.down" : "chevron.right")
-                        .font(.system(size: 11))
+                        .font(.system(size: fontSmall))
                         .foregroundStyle(border.opacity(0.7))
                         .frame(width: 20)
 
                     Text("ASMR")
-                        .font(.system(size: 14, weight: .medium, design: .monospaced))
+                        .font(.system(size: fontBody, weight: .medium, design: .monospaced))
                         .foregroundStyle(accent)
 
                     Spacer()
@@ -124,7 +137,7 @@ public struct CryoStationPicker: View {
                     if !asmrExpanded &&
                         MusicStationOption.asmrStations.contains(player.currentStation) {
                         Image(systemName: "checkmark")
-                            .font(.system(size: 11))
+                            .font(.system(size: fontSmall))
                             .foregroundStyle(accent)
                     }
                 }
@@ -156,12 +169,12 @@ public struct CryoStationPicker: View {
             } label: {
                 HStack {
                     Image(systemName: expandedCategories.contains(.billboard) ? "chevron.down" : "chevron.right")
-                        .font(.system(size: 12))
+                        .font(.system(size: fontIcon))
                         .foregroundStyle(border)
                         .frame(width: 20)
 
                     Text("Popular Hits")
-                        .font(.system(size: 16, weight: .semibold, design: .monospaced))
+                        .font(.system(size: fontMedium, weight: .semibold, design: .monospaced))
                         .foregroundStyle(tint)
 
                     Spacer()
@@ -169,7 +182,7 @@ public struct CryoStationPicker: View {
                     if !expandedCategories.contains(.billboard) &&
                         player.currentStation.category == .billboard {
                         Image(systemName: "checkmark")
-                            .font(.system(size: 12))
+                            .font(.system(size: fontIcon))
                             .foregroundStyle(accent)
                     }
                 }
@@ -200,12 +213,12 @@ public struct CryoStationPicker: View {
             } label: {
                 HStack {
                     Image(systemName: expandedDecades.contains(decade) ? "chevron.down" : "chevron.right")
-                        .font(.system(size: 11))
+                        .font(.system(size: fontSmall))
                         .foregroundStyle(border.opacity(0.7))
                         .frame(width: 20)
 
                     Text(decade.rawValue)
-                        .font(.system(size: 14, weight: .medium, design: .monospaced))
+                        .font(.system(size: fontBody, weight: .medium, design: .monospaced))
                         .foregroundStyle(accent)
 
                     Spacer()
@@ -213,7 +226,7 @@ public struct CryoStationPicker: View {
                     if !expandedDecades.contains(decade) &&
                         player.currentStation.decade == decade {
                         Image(systemName: "checkmark")
-                            .font(.system(size: 11))
+                            .font(.system(size: fontSmall))
                             .foregroundStyle(accent)
                     }
                 }
@@ -240,11 +253,11 @@ public struct CryoStationPicker: View {
         } label: {
             HStack {
                 Image(systemName: player.currentStation == station ? "checkmark.circle.fill" : "circle")
-                    .font(.system(size: 14))
+                    .font(.system(size: fontBody))
                     .foregroundStyle(player.currentStation == station ? accent : border.opacity(0.5))
 
                 Text(station.rawValue)
-                    .font(.system(size: 14, weight: .regular, design: .monospaced))
+                    .font(.system(size: fontBody, weight: .regular, design: .monospaced))
                     .foregroundStyle(player.currentStation == station ? tint : tint.opacity(0.7))
 
                 Spacer()
@@ -270,16 +283,16 @@ public struct CryoStationPicker: View {
             } label: {
                 HStack {
                     Image(systemName: myMusicExpanded ? "chevron.down" : "chevron.right")
-                        .font(.system(size: 12))
+                        .font(.system(size: fontIcon))
                         .foregroundStyle(border)
                         .frame(width: 20)
 
                     Image(systemName: "music.note.house.fill")
-                        .font(.system(size: 14))
+                        .font(.system(size: fontBody))
                         .foregroundStyle(accent)
 
                     Text("My Music")
-                        .font(.system(size: 16, weight: .semibold, design: .monospaced))
+                        .font(.system(size: fontMedium, weight: .semibold, design: .monospaced))
                         .foregroundStyle(tint)
 
                     Spacer()
@@ -313,16 +326,16 @@ public struct CryoStationPicker: View {
                         } label: {
                             HStack {
                                 Image(systemName: "square.stack")
-                                    .font(.system(size: 12))
+                                    .font(.system(size: fontIcon))
                                     .foregroundStyle(border.opacity(0.5))
 
                                 VStack(alignment: .leading, spacing: 1) {
                                     Text(album.title)
-                                        .font(.system(size: 14, weight: .regular, design: .monospaced))
+                                        .font(.system(size: fontBody, weight: .regular, design: .monospaced))
                                         .foregroundStyle(tint.opacity(0.7))
                                         .lineLimit(1)
                                     Text(album.artistName)
-                                        .font(.system(size: 11, design: .monospaced))
+                                        .font(.system(size: fontSmall, design: .monospaced))
                                         .foregroundStyle(border.opacity(0.5))
                                         .lineLimit(1)
                                 }
@@ -348,11 +361,11 @@ public struct CryoStationPicker: View {
                         } label: {
                             HStack {
                                 Image(systemName: "person.fill")
-                                    .font(.system(size: 12))
+                                    .font(.system(size: fontIcon))
                                     .foregroundStyle(border.opacity(0.5))
 
                                 Text(artist.name)
-                                    .font(.system(size: 14, weight: .regular, design: .monospaced))
+                                    .font(.system(size: fontBody, weight: .regular, design: .monospaced))
                                     .foregroundStyle(tint.opacity(0.7))
                                     .lineLimit(1)
 
@@ -382,18 +395,18 @@ public struct CryoStationPicker: View {
             } label: {
                 HStack {
                     Image(systemName: isExpanded.wrappedValue ? "chevron.down" : "chevron.right")
-                        .font(.system(size: 11))
+                        .font(.system(size: fontSmall))
                         .foregroundStyle(border.opacity(0.7))
                         .frame(width: 20)
 
                     Text(title)
-                        .font(.system(size: 14, weight: .medium, design: .monospaced))
+                        .font(.system(size: fontBody, weight: .medium, design: .monospaced))
                         .foregroundStyle(accent)
 
                     Spacer()
 
                     Text("\(count)")
-                        .font(.system(size: 12, design: .monospaced))
+                        .font(.system(size: fontIcon, design: .monospaced))
                         .foregroundStyle(border.opacity(0.5))
                 }
                 .padding(.vertical, 8)
@@ -447,11 +460,11 @@ public struct CryoStationPicker: View {
             } label: {
                 HStack {
                     Image(systemName: expandedPlaylistID == playlist.id ? "chevron.down" : "music.note.list")
-                        .font(.system(size: 14))
+                        .font(.system(size: fontBody))
                         .foregroundStyle(border.opacity(0.5))
 
                     Text(playlist.name)
-                        .font(.system(size: 18, weight: .regular, design: .monospaced))
+                        .font(.system(size: fontLarge, weight: .regular, design: .monospaced))
                         .foregroundStyle(tint.opacity(0.7))
                         .lineLimit(1)
 
@@ -459,11 +472,11 @@ public struct CryoStationPicker: View {
 
                     if expandedPlaylistID == playlist.id {
                         Text("\(revealedSongs.count) tracks")
-                            .font(.system(size: 14, design: .monospaced))
+                            .font(.system(size: fontBody, design: .monospaced))
                             .foregroundStyle(border.opacity(0.6))
                     } else if let count = playlistTrackCounts[playlist.id] {
                         Text("\(count)")
-                            .font(.system(size: 14, design: .monospaced))
+                            .font(.system(size: fontBody, design: .monospaced))
                             .foregroundStyle(border.opacity(0.5))
                     }
                 }
@@ -480,11 +493,11 @@ public struct CryoStationPicker: View {
                 } label: {
                     HStack {
                         Image(systemName: "play.fill")
-                            .font(.system(size: 14))
+                            .font(.system(size: fontBody))
                             .foregroundStyle(accent.opacity(0.8))
 
                         Text("Play All (\(revealedSongs.count) tracks)")
-                            .font(.system(size: 18, weight: .medium, design: .monospaced))
+                            .font(.system(size: fontLarge, weight: .medium, design: .monospaced))
                             .foregroundStyle(accent.opacity(0.8))
 
                         Spacer()
@@ -501,14 +514,14 @@ public struct CryoStationPicker: View {
                     } label: {
                         HStack {
                             Text(song.title)
-                                .font(.system(size: 18, weight: .regular, design: .monospaced))
+                                .font(.system(size: fontLarge, weight: .regular, design: .monospaced))
                                 .foregroundStyle(tint.opacity(0.7))
                                 .lineLimit(1)
 
                             Spacer()
 
                             Text(song.artistName)
-                                .font(.system(size: 16, design: .monospaced))
+                                .font(.system(size: fontMedium, design: .monospaced))
                                 .foregroundStyle(border.opacity(0.6))
                                 .lineLimit(1)
                         }
