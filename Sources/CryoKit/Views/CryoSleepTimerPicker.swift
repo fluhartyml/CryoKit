@@ -38,7 +38,6 @@ public struct CryoSleepTimerPicker: View {
                     player.startSleepTimer(minutes: option.rawValue)
                 } label: {
                     Text(option.displayName)
-                        .font(.system(size: 14, weight: .medium, design: .monospaced))
                         .foregroundStyle(selectedSleepTimerRaw == option.rawValue ? .black : tint)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 10)

@@ -121,7 +121,6 @@ public struct CryoTransportControls: View {
                 )
 
             Image(systemName: icon)
-                .font(.system(size: size, weight: .semibold))
                 .foregroundStyle(prominent ? tint : accent.opacity(0.8))
                 .shadow(color: prominent ? glow.opacity(0.4) : .clear, radius: 3)
         }
@@ -155,9 +154,7 @@ public struct CryoTransportControls: View {
 
             HStack(spacing: 6) {
                 Image(systemName: icon)
-                    .font(.system(size: 14, weight: .semibold))
                 Text(label)
-                    .font(.system(size: 11, weight: .medium, design: .monospaced))
             }
             .foregroundStyle(isActive ? tint : accent.opacity(0.5))
             .shadow(color: isActive ? glow.opacity(0.4) : .clear, radius: 3)
