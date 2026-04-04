@@ -9,6 +9,7 @@ import Foundation
 
 public enum StationCategory: String, CaseIterable, Sendable {
     case music = "Music"
+    case appleRadio = "Apple Radio"
     case billboard = "Popular Hits"
     case nature = "Sound Machine"
     case focus = "Focus"
@@ -32,6 +33,7 @@ public enum BillboardDecade: String, CaseIterable, Sendable {
 public enum StationSearchType: Sendable {
     case stationFirst
     case stationOnly
+    case stationByID
     case playlistFirst
     case albumFirst
 }
@@ -160,6 +162,21 @@ public enum MusicStationOption: String, CaseIterable, Sendable {
     case washingMachine = "Washing Machine"
     case hairDryer = "Hair Dryer"
 
+    // Apple Radio
+    case pinkFloydRadio = "Pink Floyd Radio"
+    case myStation = "Michael's Station"
+    case discoveryStation = "Discovery Station"
+    case tonyBennettRadio = "Tony Bennett Radio"
+    case daftPunkRadio = "Daft Punk Radio"
+    case enyaRadio = "Enya Radio"
+    case novaJazzersRadio = "Nova Jazzers Radio"
+    case enigmaRadio = "Enigma Radio"
+    case bossaLoungeRadio = "Bossa Lounge Radio"
+    case relaxRadio = "Relax"
+    case focusRadio = "Focus Radio"
+    case energyRadio = "Energy"
+    case feelGoodRadio = "Feel Good"
+
     // Focus
     case pureFocus = "Pure Focus"
     case focusFrequency = "Focus Frequency"
@@ -167,12 +184,36 @@ public enum MusicStationOption: String, CaseIterable, Sendable {
     case positiveShift = "432 Hz Positive Shift"
     case lightWork = "432 Hz Light Work"
 
+    /// Apple Music station ID for direct playback (ra. URLs).
+    public var stationID: String? {
+        switch self {
+        case .pinkFloydRadio: return "ra.487143"
+        case .myStation: return "ra.u-3a4f88d1716a552e1abb70ff757aa95f"
+        case .discoveryStation: return "ra.q-GAI6IDNhNGY4OGQxNzE2YTU1MmUxYWJiNzBmZjc1N2FhOTVm"
+        case .tonyBennettRadio: return "ra.484980"
+        case .daftPunkRadio: return "ra.5468295"
+        case .enyaRadio: return "ra.160847"
+        case .novaJazzersRadio: return "ra.882817746"
+        case .enigmaRadio: return "ra.3218461"
+        case .bossaLoungeRadio: return "ra.882820073"
+        case .relaxRadio: return "ra.q-MK3VCQ"
+        case .focusRadio: return "ra.q-MMLEBw"
+        case .energyRadio: return "ra.q-MI4G"
+        case .feelGoodRadio: return "ra.q-MLzEBw"
+        default: return nil
+        }
+    }
+
     public var category: StationCategory {
         switch self {
         case .none, .ambient, .chillout, .jazz, .country, .electronic,
              .newInPop, .rockStation, .rAndBNow, .spatialAudio,
              .bigBand, .earlyJazz, .jazzAge, .ragtime:
             return .music
+        case .pinkFloydRadio, .myStation, .discoveryStation, .tonyBennettRadio,
+             .daftPunkRadio, .enyaRadio, .novaJazzersRadio, .enigmaRadio,
+             .bossaLoungeRadio, .relaxRadio, .focusRadio, .energyRadio, .feelGoodRadio:
+            return .appleRadio
         case .top100USA,
              .billboard1958, .billboard1959,
              .billboard1960, .billboard1961, .billboard1962, .billboard1963, .billboard1964,
@@ -299,6 +340,19 @@ public enum MusicStationOption: String, CaseIterable, Sendable {
         case .vacuumCleaner: return "vacuum cleaner white noise sleep"
         case .washingMachine: return "washing machine sound"
         case .hairDryer: return "hair dryer white noise sleep"
+        case .pinkFloydRadio: return "Pink Floyd"
+        case .myStation: return "Michael's Station"
+        case .discoveryStation: return "Discovery Station"
+        case .tonyBennettRadio: return "Tony Bennett"
+        case .daftPunkRadio: return "Daft Punk"
+        case .enyaRadio: return "Enya"
+        case .novaJazzersRadio: return "Nova Jazzers"
+        case .enigmaRadio: return "Enigma"
+        case .bossaLoungeRadio: return "Bossa Lounge Project"
+        case .relaxRadio: return "Relax"
+        case .focusRadio: return "Focus"
+        case .energyRadio: return "Energy"
+        case .feelGoodRadio: return "Feel Good"
         case .pureFocus: return "pure focus"
         case .focusFrequency: return "focus frequency increase concentration memory"
         case .calmBreathing: return "deep meditation binaural beats vol 9 lightseeds"
@@ -309,6 +363,10 @@ public enum MusicStationOption: String, CaseIterable, Sendable {
 
     public var searchType: StationSearchType {
         switch self {
+        case .pinkFloydRadio, .myStation, .discoveryStation, .tonyBennettRadio,
+             .daftPunkRadio, .enyaRadio, .novaJazzersRadio, .enigmaRadio,
+             .bossaLoungeRadio, .relaxRadio, .focusRadio, .energyRadio, .feelGoodRadio:
+            return .stationByID
         case .rockStation:
             return .stationOnly
         case .infiniteRain, .forestSounds, .newInPop, .rAndBNow, .spatialAudio,

@@ -125,6 +125,13 @@ public class MusicPlaybackManager {
 
         do {
             switch station.searchType {
+            case .stationByID:
+                if let stationID = station.stationID,
+                   let result = try await playStationByID(stationID) {
+                    name = result
+                } else if let result = try await searchStation(term: term) {
+                    name = result
+                }
             case .stationFirst:
                 if let result = try await searchStation(term: term) {
                     name = result
@@ -159,6 +166,16 @@ public class MusicPlaybackManager {
                 errorMessage = "Unable to play station. Check your connection."
             }
         }
+    }
+
+    private func playStationByID(_ id: String) async throws -> String? {
+        let request = MusicCatalogResourceRequest<Station>(matching: \.id, equalTo: MusicItemID(id))
+        let response = try await request.response()
+        guard let station = response.items.first else { return nil }
+        player.queue = [station]
+        try await player.prepareToPlay()
+        try await player.play()
+        return station.name
     }
 
     private func searchStation(term: String) async throws -> String? {
