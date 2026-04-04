@@ -38,6 +38,17 @@ public enum StationSearchType: Sendable {
     case albumFirst
 }
 
+/// Describes how the station content is sourced — used by apps to group reveals.
+public enum StationSourceType: String, CaseIterable, Sendable {
+    case appleRadio = "Apple Radio"         // Direct Apple Radio station with ra. ID
+    case curatedSearch = "Apple Music"       // Search-based (finds curated playlists/stations)
+    case billboard = "Popular Hits"          // Billboard/chart playlists
+    case soundscape = "Soundscapes"          // Nature sounds, ASMR, ambient
+    case focus = "Focus & Meditation"        // Focus, binaural, meditation
+    case library = "My Library"             // User's own library content
+    case off = "Off"
+}
+
 public enum SleepTimerOption: Int, CaseIterable, Sendable {
     case off = 0
     case thirtyMin = 30
@@ -183,6 +194,44 @@ public enum MusicStationOption: String, CaseIterable, Sendable {
     case calmBreathing = "432 Hz Calm Breathing"
     case positiveShift = "432 Hz Positive Shift"
     case lightWork = "432 Hz Light Work"
+
+    /// How this station's content is sourced — used by apps to group reveals.
+    public var sourceType: StationSourceType {
+        switch self {
+        case .none:
+            return .off
+        case .pinkFloydRadio, .myStation, .discoveryStation, .tonyBennettRadio,
+             .daftPunkRadio, .enyaRadio, .novaJazzersRadio, .enigmaRadio,
+             .bossaLoungeRadio, .relaxRadio, .focusRadio, .energyRadio, .feelGoodRadio:
+            return .appleRadio
+        case .top100USA,
+             .billboard1958, .billboard1959,
+             .billboard1960, .billboard1961, .billboard1962, .billboard1963, .billboard1964,
+             .billboard1965, .billboard1966, .billboard1967, .billboard1968, .billboard1969,
+             .billboard1970, .billboard1971, .billboard1972, .billboard1973, .billboard1974,
+             .billboard1975, .billboard1976, .billboard1977, .billboard1978, .billboard1979,
+             .billboard1980, .billboard1981, .billboard1982, .billboard1983, .billboard1984,
+             .billboard1985, .billboard1986, .billboard1987, .billboard1988, .billboard1989,
+             .billboard1990, .billboard1991, .billboard1992, .billboard1993, .billboard1994,
+             .billboard1995, .billboard1996, .billboard1997, .billboard1998, .billboard1999,
+             .billboard2000, .billboard2001, .billboard2002, .billboard2003, .billboard2004,
+             .billboard2005, .billboard2006, .billboard2007, .billboard2008, .billboard2009,
+             .billboard2010, .billboard2011, .billboard2012, .billboard2013, .billboard2014,
+             .billboard2015, .billboard2016, .billboard2017, .billboard2018, .billboard2019,
+             .billboard2020, .billboard2021, .billboard2022, .billboard2023, .billboard2024,
+             .billboard2025:
+            return .billboard
+        case .infiniteRain, .forestSounds, .babblingBrook, .tropicalThunderstorm,
+             .oceanWavesThunder, .waterfallAndRain, .tibetanMonksOm,
+             .tibetanSingingBowls, .tibetanBowls4Hr, .rainSoundsForSleep,
+             .oscillatingFan, .vacuumCleaner, .washingMachine, .hairDryer:
+            return .soundscape
+        case .pureFocus, .focusFrequency, .calmBreathing, .positiveShift, .lightWork:
+            return .focus
+        default:
+            return .curatedSearch
+        }
+    }
 
     /// Apple Music station ID for direct playback (ra. URLs).
     public var stationID: String? {
@@ -442,5 +491,17 @@ public enum MusicStationOption: String, CaseIterable, Sendable {
 
     public static func stations(for decade: BillboardDecade) -> [MusicStationOption] {
         allCases.filter { $0.decade == decade }
+    }
+
+    /// Stations grouped by source type — ready for reveal UI sections.
+    public static var groupedBySource: [(source: StationSourceType, stations: [MusicStationOption])] {
+        let all = allCases.filter { $0 != .none }
+        let grouped = Dictionary(grouping: all) { $0.sourceType }
+        // Order: Apple Radio, Apple Music, Billboard, Soundscapes, Focus
+        let order: [StationSourceType] = [.appleRadio, .curatedSearch, .billboard, .soundscape, .focus]
+        return order.compactMap { source in
+            guard let stations = grouped[source], !stations.isEmpty else { return nil }
+            return (source: source, stations: stations)
+        }
     }
 }
