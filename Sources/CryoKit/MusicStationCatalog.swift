@@ -175,7 +175,7 @@ public enum MusicStationOption: String, CaseIterable, Sendable {
 
     // Apple Radio
     case pinkFloydRadio = "Pink Floyd Radio"
-    case myStation = "Michael's Station"
+    case personalStation = "My Personal Station"
     case discoveryStation = "Discovery Station"
     case tonyBennettRadio = "Tony Bennett Radio"
     case daftPunkRadio = "Daft Punk Radio"
@@ -200,7 +200,7 @@ public enum MusicStationOption: String, CaseIterable, Sendable {
         switch self {
         case .none:
             return .off
-        case .pinkFloydRadio, .myStation, .discoveryStation, .tonyBennettRadio,
+        case .pinkFloydRadio, .personalStation, .discoveryStation, .tonyBennettRadio,
              .daftPunkRadio, .enyaRadio, .novaJazzersRadio, .enigmaRadio,
              .bossaLoungeRadio, .relaxRadio, .focusRadio, .energyRadio, .feelGoodRadio:
             return .appleRadio
@@ -237,7 +237,7 @@ public enum MusicStationOption: String, CaseIterable, Sendable {
     public var stationID: String? {
         switch self {
         case .pinkFloydRadio: return "ra.487143"
-        case .myStation: return "ra.u-3a4f88d1716a552e1abb70ff757aa95f"
+        case .personalStation: return nil // Fetched dynamically via MusicKit personal station API
         case .discoveryStation: return "ra.q-GAI6IDNhNGY4OGQxNzE2YTU1MmUxYWJiNzBmZjc1N2FhOTVm"
         case .tonyBennettRadio: return "ra.484980"
         case .daftPunkRadio: return "ra.5468295"
@@ -259,7 +259,7 @@ public enum MusicStationOption: String, CaseIterable, Sendable {
              .newInPop, .rockStation, .rAndBNow, .spatialAudio,
              .bigBand, .earlyJazz, .jazzAge, .ragtime:
             return .music
-        case .pinkFloydRadio, .myStation, .discoveryStation, .tonyBennettRadio,
+        case .pinkFloydRadio, .personalStation, .discoveryStation, .tonyBennettRadio,
              .daftPunkRadio, .enyaRadio, .novaJazzersRadio, .enigmaRadio,
              .bossaLoungeRadio, .relaxRadio, .focusRadio, .energyRadio, .feelGoodRadio:
             return .appleRadio
@@ -390,7 +390,7 @@ public enum MusicStationOption: String, CaseIterable, Sendable {
         case .washingMachine: return "washing machine sound"
         case .hairDryer: return "hair dryer white noise sleep"
         case .pinkFloydRadio: return "Pink Floyd"
-        case .myStation: return "Michael's Station"
+        case .personalStation: return "My Personal Station"
         case .discoveryStation: return "Discovery Station"
         case .tonyBennettRadio: return "Tony Bennett"
         case .daftPunkRadio: return "Daft Punk"
@@ -412,7 +412,7 @@ public enum MusicStationOption: String, CaseIterable, Sendable {
 
     public var searchType: StationSearchType {
         switch self {
-        case .pinkFloydRadio, .myStation, .discoveryStation, .tonyBennettRadio,
+        case .pinkFloydRadio, .personalStation, .discoveryStation, .tonyBennettRadio,
              .daftPunkRadio, .enyaRadio, .novaJazzersRadio, .enigmaRadio,
              .bossaLoungeRadio, .relaxRadio, .focusRadio, .energyRadio, .feelGoodRadio:
             return .stationByID

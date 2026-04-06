@@ -124,35 +124,42 @@ public class MusicPlaybackManager {
         var name = station.rawValue
 
         do {
-            switch station.searchType {
-            case .stationByID:
-                if let stationID = station.stationID,
-                   let result = try await playStationByID(stationID) {
-                    name = result
-                } else if let result = try await searchStation(term: term) {
+            // Personal station — fetch dynamically from user's Apple Music account
+            if station == .personalStation {
+                if let result = try await playPersonalStation() {
                     name = result
                 }
-            case .stationFirst:
-                if let result = try await searchStation(term: term) {
-                    name = result
-                } else if let result = try await searchPlaylist(term: term) {
-                    name = result
-                }
-            case .stationOnly:
-                if let result = try await searchStation(term: term) {
-                    name = result
-                }
-            case .playlistFirst:
-                if let result = try await searchPlaylist(term: term) {
-                    name = result
-                } else if let result = try await searchStation(term: term) {
-                    name = result
-                }
-            case .albumFirst:
-                if let result = try await searchAlbum(term: term) {
-                    name = result
-                } else if let result = try await searchPlaylist(term: term) {
-                    name = result
+            } else {
+                switch station.searchType {
+                case .stationByID:
+                    if let stationID = station.stationID,
+                       let result = try await playStationByID(stationID) {
+                        name = result
+                    } else if let result = try await searchStation(term: term) {
+                        name = result
+                    }
+                case .stationFirst:
+                    if let result = try await searchStation(term: term) {
+                        name = result
+                    } else if let result = try await searchPlaylist(term: term) {
+                        name = result
+                    }
+                case .stationOnly:
+                    if let result = try await searchStation(term: term) {
+                        name = result
+                    }
+                case .playlistFirst:
+                    if let result = try await searchPlaylist(term: term) {
+                        name = result
+                    } else if let result = try await searchStation(term: term) {
+                        name = result
+                    }
+                case .albumFirst:
+                    if let result = try await searchAlbum(term: term) {
+                        name = result
+                    } else if let result = try await searchPlaylist(term: term) {
+                        name = result
+                    }
                 }
             }
 
@@ -176,6 +183,37 @@ public class MusicPlaybackManager {
         try await player.prepareToPlay()
         try await player.play()
         return station.name
+    }
+
+    /// Fetches and plays the user's personal Apple Music station dynamically.
+    /// Returns the station name from Apple's API (e.g. "Michael's Station").
+    private func playPersonalStation() async throws -> String? {
+        let url = URL(string: "https://api.music.apple.com/v1/me/stations?filter[identity]=personal")!
+
+        let request = MusicDataRequest(urlRequest: URLRequest(url: url))
+        let response = try await request.response()
+
+        let decoded = try JSONDecoder().decode(PersonalStationResponse.self, from: response.data)
+        guard let stationData = decoded.data.first else { return nil }
+
+        // Play by the dynamically fetched station ID
+        let stationID = stationData.id
+        return try await playStationByID(stationID)
+    }
+
+    /// Response model for the personal station API endpoint.
+    private struct PersonalStationResponse: Decodable {
+        let data: [PersonalStationData]
+    }
+
+    private struct PersonalStationData: Decodable {
+        let id: String
+        let type: String
+        let attributes: PersonalStationAttributes?
+    }
+
+    private struct PersonalStationAttributes: Decodable {
+        let name: String?
     }
 
     private func searchStation(term: String) async throws -> String? {
