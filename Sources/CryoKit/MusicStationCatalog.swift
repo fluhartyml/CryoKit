@@ -206,18 +206,6 @@ public enum MusicStationOption: String, CaseIterable, Sendable {
     case jazzStation = "Jazz Station"
     case indieStation = "Indie Station"
     case acousticStation = "Acoustic Station"
-    case sunny991 = "Sunny 99.1"
-    case kroq = "KROQ"
-    case kiis1027 = "102.7 KIIS-FM"
-    case rock955 = "Rock 95.5"
-    case lite1067 = "106.7 Lite FM"
-    case kEarth101 = "K-Earth 101"
-    case wild949 = "Wild 94.9"
-    case power1051 = "Power 105.1"
-    case q1043 = "Q104.3"
-    case channel933 = "Channel 93.3"
-    case lite939 = "93.9 Lite FM"
-    case theEnd1077 = "107.7 The End"
 
     // Focus
     case pureFocus = "Pure Focus"
@@ -238,9 +226,7 @@ public enum MusicStationOption: String, CaseIterable, Sendable {
              .classicRockStation, .smoothJazzStation, .sleepStation, .popStation,
              .eightiesHits, .classicalStation, .spaStation, .pianoStation,
              .danceStation, .adultRockStation, .lofiStation, .countryHitsStation,
-             .jazzStation, .indieStation, .acousticStation,
-             .sunny991, .kroq, .kiis1027, .rock955, .lite1067, .kEarth101,
-             .wild949, .power1051, .q1043, .channel933, .lite939, .theEnd1077:
+             .jazzStation, .indieStation, .acousticStation:
             return .appleRadio
         case .top100USA,
              .billboard1958, .billboard1959,
@@ -325,30 +311,6 @@ public enum MusicStationOption: String, CaseIterable, Sendable {
         case .indieStation: return "ra.985496064"
         // https://music.apple.com/us/station/acoustic-station/ra.985501172
         case .acousticStation: return "ra.985501172"
-        // https://music.apple.com/us/station/sunny-99-1/ra.1459431907
-        case .sunny991: return "ra.1459431907"
-        // https://music.apple.com/us/station/kroq/ra.1459432226
-        case .kroq: return "ra.1459432226"
-        // https://music.apple.com/us/station/102-7-kiis-fm-los-angeles/ra.1459431850
-        case .kiis1027: return "ra.1459431850"
-        // https://music.apple.com/us/station/rock-95-5/ra.1461191980
-        case .rock955: return "ra.1461191980"
-        // https://music.apple.com/us/station/106-7-lite-fm/ra.1459431903
-        case .lite1067: return "ra.1459431903"
-        // https://music.apple.com/us/station/k-earth-101/ra.1459432104
-        case .kEarth101: return "ra.1459432104"
-        // https://music.apple.com/us/station/wild-94-9/ra.1459431965
-        case .wild949: return "ra.1459431965"
-        // https://music.apple.com/us/station/power-105-1/ra.1459432295
-        case .power1051: return "ra.1459432295"
-        // https://music.apple.com/us/station/q104-3/ra.1459431905
-        case .q1043: return "ra.1459431905"
-        // https://music.apple.com/us/station/channel-93-3/ra.1461191950
-        case .channel933: return "ra.1461191950"
-        // https://music.apple.com/us/station/93-9-lite-fm/ra.1459431989
-        case .lite939: return "ra.1459431989"
-        // https://music.apple.com/us/station/107-7-the-end/ra.1461900129
-        case .theEnd1077: return "ra.1461900129"
         default: return nil
         }
     }
@@ -366,9 +328,7 @@ public enum MusicStationOption: String, CaseIterable, Sendable {
              .classicRockStation, .smoothJazzStation, .sleepStation, .popStation,
              .eightiesHits, .classicalStation, .spaStation, .pianoStation,
              .danceStation, .adultRockStation, .lofiStation, .countryHitsStation,
-             .jazzStation, .indieStation, .acousticStation,
-             .sunny991, .kroq, .kiis1027, .rock955, .lite1067, .kEarth101,
-             .wild949, .power1051, .q1043, .channel933, .lite939, .theEnd1077:
+             .jazzStation, .indieStation, .acousticStation:
             return .appleRadio
         case .top100USA,
              .billboard1958, .billboard1959,
@@ -528,18 +488,6 @@ public enum MusicStationOption: String, CaseIterable, Sendable {
         case .jazzStation: return "Jazz Station"
         case .indieStation: return "Indie Station"
         case .acousticStation: return "Acoustic Station"
-        case .sunny991: return "Sunny 99.1"
-        case .kroq: return "KROQ"
-        case .kiis1027: return "102.7 KIIS-FM"
-        case .rock955: return "Rock 95.5"
-        case .lite1067: return "106.7 Lite FM"
-        case .kEarth101: return "K-Earth 101"
-        case .wild949: return "Wild 94.9"
-        case .power1051: return "Power 105.1"
-        case .q1043: return "Q104.3"
-        case .channel933: return "Channel 93.3"
-        case .lite939: return "93.9 Lite FM"
-        case .theEnd1077: return "107.7 The End"
         case .pureFocus: return "pure focus"
         case .focusFrequency: return "focus frequency increase concentration memory"
         case .calmBreathing: return "deep meditation binaural beats vol 9 lightseeds"
@@ -557,9 +505,7 @@ public enum MusicStationOption: String, CaseIterable, Sendable {
              .classicRockStation, .smoothJazzStation, .sleepStation, .popStation,
              .eightiesHits, .classicalStation, .spaStation, .pianoStation,
              .danceStation, .adultRockStation, .lofiStation, .countryHitsStation,
-             .jazzStation, .indieStation, .acousticStation,
-             .sunny991, .kroq, .kiis1027, .rock955, .lite1067, .kEarth101,
-             .wild949, .power1051, .q1043, .channel933, .lite939, .theEnd1077:
+             .jazzStation, .indieStation, .acousticStation:
             return .stationByID
         case .rockStation:
             return .stationOnly
